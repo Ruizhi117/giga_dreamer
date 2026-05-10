@@ -19,13 +19,13 @@
 
 模型架构基于wan2.2-5B DiT,VAE在训练时候冻结：
 
-![giga-world-1](D:\Workspace\Main WORK\alpha\WM\giga-cvpr-wm-2026\giga_dreamer\asserts\giga-world-1.png)
+![giga-world-1](.\asserts\giga-world-1.png)
 
 提供了批量推理/checkpoint与output同步脚本
 
 训练环境为4卡A800 单任务训练速度4h/10epochs
 
-![training](D:\Workspace\Main WORK\alpha\WM\giga-cvpr-wm-2026\giga_dreamer\asserts\training.png)
+![training](.\asserts\training.png)
 
 
 
@@ -33,31 +33,39 @@
 
 
 
-<video src="D:\Workspace\Main WORK\alpha\WM\giga-cvpr-wm-2026\giga_dreamer\asserts\concat_episode_7.mp4"></video>
+<video src=".\asserts\concat_episode_7.mp4"></video>
 
 # 黑色T恤 via 深度图control
 
-<video src="D:\Workspace\Main WORK\alpha\WM\giga-cvpr-wm-2026\giga_dreamer\asserts\h1-test.mp4"></video>
+<video src=".\asserts\h1-test.mp4"></video>
 
 # task3 纸盒操作
 
-<video src="D:\Workspace\Main WORK\alpha\WM\giga-cvpr-wm-2026\giga_dreamer\asserts\task3.mp4"></video>
+<video src=".\asserts\task3.mp4"></video>
 
 
 
 # task4 开盒倒薯条
 
-<video src="D:\Workspace\Main WORK\alpha\WM\giga-cvpr-wm-2026\giga_dreamer\asserts\task4.mp4"></video>
+<video src=".\asserts\task4.mp4"></video>
 
 # task2 碗放入盘子
 
-<video src="D:\Workspace\Main WORK\alpha\WM\giga-cvpr-wm-2026\giga_dreamer\asserts\task2.mp4"></video>
+<video src=".\asserts\task2.mp4"></video>
 
 
 
 ## 关于长视频问题
 
 wan2.2-5B 参数较小且训练数据少有30s+，且基于embedding的控制过于粗糙*[ref](https://mp.weixin.qq.com/s/s6VNn45vUNUsu8_r3NBsQg)
+
+# 推理（online and offline）
+
+![Generation quality evaluation pipeline](./asserts/eval1.png)
+
+![World model as VLA evaluator evaluation pipeline](./asserts/eval2.png)
+
+评估指标为 world arena/ Pbench-nvidia/Veo-sim
 
 
 
