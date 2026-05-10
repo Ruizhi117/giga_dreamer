@@ -26,31 +26,27 @@
 
 # 单任务推理结果
 
-## 叠衣服task6 
+## task6白色衣服 
+
+![task6](./asserts/task6.gif)
 
 
 
-<video src="./asserts/concat_episode_7.mp4"></video>
+## task h1黑色T恤 via 深度图control
 
-## 黑色T恤 via 深度图control
-
-<video src="./asserts/h1-test.mp4"></video>
-
-## task3 纸盒操作
-
-<video src="./asserts/task3.mp4"></video>
-
-
+![h1-test](./asserts/h1-test.gif)
 
 ## task4 开盒倒薯条
 
-<video src="./asserts/task4.mp4"></video>
+![task4](./asserts/task4.gif)
 
-## task2 碗放入盘子
+## task 3 折叠纸盒
 
-<video controls width="50%">
-  <source src="asserts/task2.mp4" type="video/mp4">
-</video>
+![task3](./asserts/task3.gif)
+
+## task2 碗放在盘子上
+
+![task2](./asserts/task2.gif)
 
 
 
