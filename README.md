@@ -19,13 +19,47 @@
 
 模型架构基于wan2.2-5B DiT,VAE在训练时候冻结：
 
-![giga-world-1](D:\Workspace\Main WORK\alpha\WM\giga-cvpr-wm-2026\visualization\giga-world-1.png)
+![giga-world-1](D:\Workspace\Main WORK\alpha\WM\giga-cvpr-wm-2026\giga_dreamer\asserts\giga-world-1.png)
 
 提供了批量推理/checkpoint与output同步脚本
 
 训练环境为4卡A800 单任务训练速度4h/10epochs
 
-![image-20260510215413954](C:\Users\fengr\AppData\Roaming\Typora\typora-user-images\image-20260510215413954.png)
+![training](D:\Workspace\Main WORK\alpha\WM\giga-cvpr-wm-2026\giga_dreamer\asserts\training.png)
+
+
+
+# 叠衣服task6 
+
+
+
+<video src="D:\Workspace\Main WORK\alpha\WM\giga-cvpr-wm-2026\giga_dreamer\asserts\concat_episode_7.mp4"></video>
+
+# 黑色T恤 via 深度图control
+
+<video src="D:\Workspace\Main WORK\alpha\WM\giga-cvpr-wm-2026\giga_dreamer\asserts\h1-test.mp4"></video>
+
+# task3 纸盒操作
+
+<video src="D:\Workspace\Main WORK\alpha\WM\giga-cvpr-wm-2026\giga_dreamer\asserts\task3.mp4"></video>
+
+
+
+# task4 开盒倒薯条
+
+<video src="D:\Workspace\Main WORK\alpha\WM\giga-cvpr-wm-2026\giga_dreamer\asserts\task4.mp4"></video>
+
+# task2 碗放入盘子
+
+<video src="D:\Workspace\Main WORK\alpha\WM\giga-cvpr-wm-2026\giga_dreamer\asserts\task2.mp4"></video>
+
+
+
+## 关于长视频问题
+
+wan2.2-5B 参数较小且训练数据少有30s+，且基于embedding的控制过于粗糙*[ref](https://mp.weixin.qq.com/s/s6VNn45vUNUsu8_r3NBsQg)
+
+
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Project](https://img.shields.io/badge/Project-Page-99cc2)](https://gigaai-research.github.io/GigaBrain-Challenge-2026/index.html#about)
@@ -33,11 +67,8 @@
 [![Datasets](https://img.shields.io/badge/Dataset-Huggingface-blue?logo=huggingface)](https://huggingface.co/datasets/open-gigaai/CVPR-2026-WorldModel-Track-Dataset/tree/main)
 [![Leaderboard](https://img.shields.io/badge/Leaderboard-Huggingface-yellow?logo=huggingface)](https://huggingface.co/spaces/open-gigaai/CVPR-2026-WorldModel-Track-LeaderBoard)
 
-</div>
 
-<div align="center">
-<img src="asserts/illustration.gif" alt="illustration" height="400"/>
-</div>
+
 
 ## About
 
