@@ -3,10 +3,7 @@
 
 ​    
 
-    继承自：[CVPR-2026-Workshop-WM-Track](https://github.com/open-gigaai/CVPR-2026-Workshop-WM-Track)
-
-
-    包含以下修改：
+继承自：[CVPR-2026-Workshop-WM-Track](https://github.com/open-gigaai/CVPR-2026-Workshop-WM-Track)
 
 
 - 1）修改vla的张量detype可部署在cpu
@@ -19,13 +16,13 @@
 
 模型架构基于wan2.2-5B DiT,VAE在训练时候冻结：
 
-![giga-world-1](.\asserts\giga-world-1.png)
+![giga-world-1](./asserts/giga-world-1.png)
 
 提供了批量推理/checkpoint与output同步脚本
 
 训练环境为4卡A800 单任务训练速度4h/10epochs
 
-![training](.\asserts\training.png)
+![training](./asserts/training.png)
 
 
 
@@ -33,25 +30,25 @@
 
 
 
-<video src=".\asserts\concat_episode_7.mp4"></video>
+<video src="./asserts/concat_episode_7.mp4"></video>
 
 # 黑色T恤 via 深度图control
 
-<video src=".\asserts\h1-test.mp4"></video>
+<video src="./asserts/h1-test.mp4"></video>
 
 # task3 纸盒操作
 
-<video src=".\asserts\task3.mp4"></video>
+<video src="./asserts/task3.mp4"></video>
 
 
 
 # task4 开盒倒薯条
 
-<video src=".\asserts\task4.mp4"></video>
+<video src="./asserts/task4.mp4"></video>
 
 # task2 碗放入盘子
 
-<video src=".\asserts\task2.mp4"></video>
+<video src="./asserts/task2.mp4"></video>
 
 
 
