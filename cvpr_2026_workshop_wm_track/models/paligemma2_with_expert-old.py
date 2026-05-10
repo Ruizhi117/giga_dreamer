@@ -92,20 +92,12 @@ class SiglipVisionTransformer(nn.Module):
         Returns:
             BaseModelOutputWithPooling with last_hidden_state and optionally pooled output.
         """
-        import contextlib
         output_attentions = output_attentions if output_attentions is not None else self.config.output_attentions
         output_hidden_states = output_hidden_states if output_hidden_states is not None else self.config.output_hidden_states
 
         hidden_states = self.embeddings(pixel_values, interpolate_pos_encoding=interpolate_pos_encoding)
-        
-        current_dtype = self.post_layernorm.weight.dtype
-        current_device = self.post_layernorm.weight.device.type
-        current_device = current_device if current_device in ['cuda', 'cpu'] else 'cpu'
-
-        hidden_states = hidden_states.to(dtype=current_dtype)
-        
-        autocast_ctx = torch.autocast(device_type=current_device, dtype=current_dtype) if current_device == 'cuda' else contextlib.nullcontext()
-        with autocast_ctx:
+        hidden_states = hidden_states.to(dtype=torch.bfloat16)
+        with torch.autocast(device_type='cuda', dtype=torch.bfloat16):
             encoder_outputs: BaseModelOutput = self.encoder(
                 inputs_embeds=hidden_states,
                 output_attentions=output_attentions,
@@ -763,20 +755,13 @@ class PaliGemma2WithExpertModel(nn.Module):
         Returns:
             (outputs_embeds, past_key_values): outputs per stream and the KV cache.
         """
-        import contextlib
         if inputs_embeds is None:
             inputs_embeds = [None, None]
         if adarms_cond is None:
             adarms_cond = [None, None]
-            
-        current_dtype = self.vision_tower.post_layernorm.weight.dtype if hasattr(self, 'vision_tower') and hasattr(self.vision_tower.post_layernorm, 'weight') else torch.float32
-        current_device = self.vision_tower.post_layernorm.weight.device.type if hasattr(self, 'vision_tower') and hasattr(self.vision_tower.post_layernorm, 'weight') else 'cpu'
-        current_device = current_device if current_device in ['cuda', 'cpu'] else 'cpu'
+        inputs_embeds = [input_embed.to(dtype=torch.bfloat16) if input_embed is not None else None for input_embed in inputs_embeds]
 
-        inputs_embeds = [input_embed.to(dtype=current_dtype) if input_embed is not None else None for input_embed in inputs_embeds]
-
-        autocast_ctx = torch.autocast(device_type=current_device, dtype=current_dtype) if current_device == 'cuda' else contextlib.nullcontext()
-        with autocast_ctx:
+        with torch.autocast(device_type='cuda', dtype=torch.bfloat16):
             if use_cache and past_key_values is None:
                 past_key_values = {}
 

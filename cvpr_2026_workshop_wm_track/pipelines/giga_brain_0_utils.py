@@ -485,7 +485,7 @@ class ImageTransform:
 
             images.append(img)
             img_masks.append(torch.tensor(True, dtype=torch.bool, device=img.device))
-
+         
         return images, img_masks, image_transform_params
 
 
@@ -638,10 +638,11 @@ class PromptTokenizerTransform:
         """
         self.is_train = is_train
         self.device = 'cpu'
-        self.paligemma_tokenizer = AutoTokenizer.from_pretrained(tokenizer_model_path)
-        self.paligemma_tokenizer.add_bos_token = True
+        print("DEBUG: Trying to load tokenizer from:", fast_tokenizer_path) 
+        self.paligemma_tokenizer = AutoTokenizer.from_pretrained(tokenizer_model_path,use_fast=True) # bpe 文件
+        self.paligemma_tokenizer.add_bos_token = True # True
         self.processor = AutoProcessor.from_pretrained(tokenizer_model_path)
-        self.fast_tokenizer = AutoProcessor.from_pretrained(fast_tokenizer_path, trust_remote_code=True)
+        self.fast_tokenizer = AutoProcessor.from_pretrained(fast_tokenizer_path, trust_remote_code=True,use_fast=True) #use_fast=False  json / model
 
         self.encode_action_input = encode_action_input
         self.discrete_state_input = discrete_state_input

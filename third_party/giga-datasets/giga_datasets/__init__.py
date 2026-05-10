@@ -8,7 +8,7 @@ from .datasets import (
     Dataset,
     FileDataset,
     FileWriter,
-    LeRobotDataset,
+    #LeRobotDataset,
     LmdbDataset,
     LmdbWriter,
     PklDataset,

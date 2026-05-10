@@ -14,17 +14,8 @@ Key improvements in this version:
 """
 
 from __future__ import annotations
+
 import sys
-
-
-import importlib
-importlib.invalidate_caches()  
-if 'giga_datasets' in sys.modules:
-    del sys.modules['giga_datasets']
-if 'giga_datasets.datasets' in sys.modules:
-    del sys.modules['giga_datasets.datasets']
-
-    
 import os
 import uuid
 import argparse
@@ -56,8 +47,6 @@ sys.path.insert(
     1,
     "/home/alphalab/frz/CVPR-2026-Workshop-WM-Track-main/simulator",
 )
-
-
 
 sys.path.insert(0, "/home/alphalab/frz/CVPR-2026-Workshop-WM-Track-main/third_party/giga-datasets/")
 from giga_datasets import load_dataset

@@ -1,7 +1,32 @@
 <div align="center" style="font-family: charter;">
-    <h1> CVPR-2026-Workshop-WM-Track </h1>
+    <h1> Giga Dreamer CVPR-2026-Workshop-WM-Track </h1>
 
-[//]: # ([![License]&#40;https://img.shields.io/badge/License-Apache_2.0-blue.svg&#41;]&#40;https://opensource.org/licenses/Apache-2.0&#41;)
+​    
+
+    继承自：[CVPR-2026-Workshop-WM-Track](https://github.com/open-gigaai/CVPR-2026-Workshop-WM-Track)
+
+
+    包含以下修改：
+
+
+- 1）修改vla的张量detype可部署在cpu
+  - 实现：WM-GPU,VLA-CPU,simulator-4090laptop ，
+  - 硬件规格：5090 32GB VRAM+285K 64GB RAM +4090laptop 16GB VRAM
+  
+-  2）重构了控制输入方式，增加了基于纯深度图的推理
+
+  
+
+模型架构基于wan2.2-5B DiT,VAE在训练时候冻结：
+
+![giga-world-1](D:\Workspace\Main WORK\alpha\WM\giga-cvpr-wm-2026\visualization\giga-world-1.png)
+
+提供了批量推理/checkpoint与output同步脚本
+
+训练环境为4卡A800 单任务训练速度4h/10epochs
+
+![image-20260510215413954](C:\Users\fengr\AppData\Roaming\Typora\typora-user-images\image-20260510215413954.png)
+
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Project](https://img.shields.io/badge/Project-Page-99cc2)](https://gigaai-research.github.io/GigaBrain-Challenge-2026/index.html#about)
 [![Models](https://img.shields.io/badge/Model-Huggingface-red?logo=huggingface)](https://huggingface.co/collections/open-gigaai/cvpr-2026-worldmodel-track)

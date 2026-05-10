@@ -5,5 +5,5 @@ from .file_dataset import FileDataset, FileWriter
 from .lmdb_dataset import LmdbDataset, LmdbWriter
 from .pkl_dataset import PklDataset, PklWriter
 
-if is_lerobot_available():
-    from .lerobot_dataset import LeRobotDataset
+# if is_lerobot_available():
+#     from .lerobot_dataset import LeRobotDataset

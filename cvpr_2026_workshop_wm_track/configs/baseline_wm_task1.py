@@ -1,11 +1,11 @@
 from ..model_config import model_config, DATA_DIR
 
 dst_size = (224, 224)
-num_frames = 8  #8
+num_frames = 8
 rollout = 4
 total_frames = num_frames * rollout + 1
 fps = 16
-project_dir="experiments/baseline_wm/task4/"
+project_dir="/workspace/CVPR-2026-Workshop-WM-Track-main/"
 config = dict(
     project_dir=project_dir,
     runners=["cvpr_2026_workshop_wm_track.trainer.BaselineWMTrainer"],
@@ -21,14 +21,14 @@ config = dict(
     dataloaders=dict(
         train=dict(
             data_or_config=[
-                f"{DATA_DIR}/task4/train"
+                f"{DATA_DIR}/task1/train"
             ],
-            batch_size_per_gpu=1,  #1
-            num_workers=16,  #8  single H20- 16 cores
-            # num_workers=0
+            batch_size_per_gpu=1,
+            num_workers=8,
+            # num_workers=0,
             filter=dict(
                 mode='overall_func',
-                func='cvpr_2026_workshop_wm_track.configs.baseline_wm_task4.filter_data',
+                func='cvpr_2026_workshop_wm_track.configs.baseline_wm_task1.filter_data',
                 dst_size=dst_size,
                 min_num_frames=num_frames,
                 min_area=dst_size[0] * dst_size[1],
@@ -88,7 +88,7 @@ config = dict(
         # mixed_precision='fp8',  # fp16, bf16
         # fp8_ignore_modules=['t_embedder.1.linear', 'adaLN_modulation'],
         mixed_precision='bf16',  # fp16, bf16
-        checkpoint_interval=5,#10
+        checkpoint_interval=10,
         checkpoint_total_limit=-1,
         checkpoint_safe_serialization=False,
         checkpoint_strict=False,

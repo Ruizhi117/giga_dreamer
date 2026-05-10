@@ -1,8 +1,9 @@
 import os
 
-HUGGINGFACE_MODEL_CACHE = "/shared_disk/models/huggingface"
+HUGGINGFACE_MODEL_CACHE = "/home/alphalab/frz/models/huggingface"
 DEFAULT_PROMPT_EMBEDDING_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "asserts", "default_prompt_embeds.pth")  # code repo assert os.path.exists(DEFAULT_PROMPT_EMBEDDING_PATH)
-DATA_DIR = "/shared_disk/users/yukun.zhou/dataset/CVPR-2026-Workshop-WM-Track-Dataset/"
+DATA_DIR = "/home/alphalab/frz/datasets/"
+#DATA_DIR = HUGGINGFACE_MODEL_CACHE
 assert os.path.exists(DEFAULT_PROMPT_EMBEDDING_PATH), os.path.abspath(DEFAULT_PROMPT_EMBEDDING_PATH) + "not exist"
 
 model_config = {

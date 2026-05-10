@@ -23,7 +23,8 @@ from giga_datasets import Dataset, FileWriter, PklWriter, load_dataset
 from giga_datasets import utils as gd_utils
 import pandas as pd
 from decord import VideoReader as DecordVideoReader
-from torchvision.io import VideoReader as TorchVideoReader
+#from torchvision.io import VideoReader as TorchVideoReader
+from torchcodec.decoders import VideoDecoder as TorchVideoReader
 from ..utils import resize_with_pad
 import torch
 

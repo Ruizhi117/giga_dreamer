@@ -1,11 +1,11 @@
 from ..model_config import model_config, DATA_DIR
 
-dst_size = (224, 224)
-num_frames = 8  #8
-rollout = 4
+dst_size =(112, 112) #(224, 224)
+num_frames = 2  #8
+rollout = 1
 total_frames = num_frames * rollout + 1
-fps = 16
-project_dir="experiments/baseline_wm/task4/"
+fps = 1
+project_dir="experiments/baseline_wm/task0/"
 config = dict(
     project_dir=project_dir,
     runners=["cvpr_2026_workshop_wm_track.trainer.BaselineWMTrainer"],
@@ -21,10 +21,10 @@ config = dict(
     dataloaders=dict(
         train=dict(
             data_or_config=[
-                f"{DATA_DIR}/task4/train"
+                f"{DATA_DIR}/task0/train"
             ],
             batch_size_per_gpu=1,  #1
-            num_workers=16,  #8  single H20- 16 cores
+            num_workers=4,  #8  single H20- 16 cores
             # num_workers=0
             filter=dict(
                 mode='overall_func',
@@ -32,7 +32,7 @@ config = dict(
                 dst_size=dst_size,
                 min_num_frames=num_frames,
                 min_area=dst_size[0] * dst_size[1],
-                min_size=4,
+                min_size=1,#4
             ),
             transform=dict(
                 type='WMTransforms',
@@ -43,7 +43,7 @@ config = dict(
                     mask_generator=dict(
                         max_ref_frames=1,
                         start=1,
-                        factor=4,
+                        factor=1,#4
                     ),
                 ),
                 is_train=True,
@@ -84,12 +84,12 @@ config = dict(
     train=dict(
         resume=True,
         max_epochs=10000,
-        gradient_accumulation_steps=4,
-        # mixed_precision='fp8',  # fp16, bf16
-        # fp8_ignore_modules=['t_embedder.1.linear', 'adaLN_modulation'],
-        mixed_precision='bf16',  # fp16, bf16
-        checkpoint_interval=5,#10
-        checkpoint_total_limit=-1,
+        gradient_accumulation_steps=1,
+        mixed_precision='fp8',  # fp16, bf16
+        fp8_ignore_modules=['t_embedder.1.linear', 'adaLN_modulation'],
+        #mixed_precision='bf16',  # fp16, bf16
+        checkpoint_interval=150,#10
+        checkpoint_total_limit=5, #-1 all
         checkpoint_safe_serialization=False,
         checkpoint_strict=False,
         log_with='tensorboard',

@@ -44,8 +44,12 @@ class GigaBrain0Pipeline(BasePipeline):
             depth_img_prefix_name: Optional prefix for depth image keys when depth is enabled.
         """
         super().__init__()
-        self.policy = GigaBrain0Policy.from_pretrained(model_path)
+        self.policy = GigaBrain0Policy.from_pretrained(model_path,
+                                                       torch_dtype=torch.float32,
+                                                       force_fp32=True)
         self.policy.eval()
+        self.policy.float() # cpu for test
+  
         self.policy_triton = None
         self.embodiment_id = embodiment_id
         self.device = 'cpu'
@@ -84,7 +88,7 @@ class GigaBrain0Pipeline(BasePipeline):
         if self.policy_triton is not None:
             self.policy_triton.to(device)
         else:
-            self.policy.to(device)
+            self.policy.to(device).float() #test
         self.state_normalize_transform.to(device)
         self.state_unnormalize_transform.to(device)
         self.action_unnormalize_transform.to(device)
