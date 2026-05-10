@@ -24,31 +24,33 @@
 
 ![training](./asserts/training.png)
 
+# 单任务推理结果
 
-
-# 叠衣服task6 
+## 叠衣服task6 
 
 
 
 <video src="./asserts/concat_episode_7.mp4"></video>
 
-# 黑色T恤 via 深度图control
+## 黑色T恤 via 深度图control
 
 <video src="./asserts/h1-test.mp4"></video>
 
-# task3 纸盒操作
+## task3 纸盒操作
 
 <video src="./asserts/task3.mp4"></video>
 
 
 
-# task4 开盒倒薯条
+## task4 开盒倒薯条
 
 <video src="./asserts/task4.mp4"></video>
 
-# task2 碗放入盘子
+## task2 碗放入盘子
 
-<video src="./asserts/task2.mp4"></video>
+<video controls width="50%">
+  <source src="asserts/task2.mp4" type="video/mp4">
+</video>
 
 
 
