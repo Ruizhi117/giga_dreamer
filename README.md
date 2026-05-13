@@ -1,66 +1,146 @@
 <div align="center" style="font-family: charter;">
-    <h1> Giga Dreamer CVPR-2026-Workshop-WM-Track </h1>
+    <h1> Giga Dreamer | CVPR-2026-Workshop-WM-Track </h1>
+
 
 ​    
 
-继承自：[CVPR-2026-Workshop-WM-Track](https://github.com/open-gigaai/CVPR-2026-Workshop-WM-Track)
+⭐inherited from ：[CVPR-2026-Workshop-WM-Track](https://github.com/open-gigaai/CVPR-2026-Workshop-WM-Track)  
+
+🌟**TLDR** : Modified the pipeline to support single-RTX 5090 online inference by decoupling VLA execution on CPU , WM and simulator on consuming GPU. Added colored depth-map conditioning and a latent normalization layer(AdaIN) for improved stability and control consistency. The model architecture and inference results are shown below.
 
 
-- 1）修改vla的张量detype可部署在cpu
-  - 实现：WM-GPU,VLA-CPU,simulator-4090laptop ，
+
+
+
+
+- 1）修改VLA的张量detype可部署在CPU
+  - 实现：WM-GPU（27G VRAM）,VLA-CPU(),simulator-4090laptop（<1G VRAM） ，
   - 硬件规格：5090 32GB VRAM+285K 64GB RAM +4090laptop 16GB VRAM
   
--  2）重构了控制输入方式，增加了基于纯深度图的推理
+-  2）重构了控制输入方式，增加了基于纯深度图的推理，提供了批量推理/checkpoint与output同步脚本
 
-  
+- 3）在VAE latent 注入控制信号时，对于tensor体素逐channel做了分布对齐(AdaIN)，以维持均latent差特征与RGB-chunk编码一致
 
-模型架构基于wan2.2-5B DiT,VAE在训练时候冻结：
+```python
+    #transofrmer_wan_condition.py
+    #ori-code：
+    #		hidden_states = hidden_states + depth_states * 0.5 + replay_states * 0.5
+    #		input tensor shape  (B, 16, F_latent, H_latent, W_latent)
+   			mixed = hidden_states + depth_states * 0.5 + replay_states * 0.5 #origin design
+            
+            #  hidden_states channel wise mariginal distrubution B=0, C=1, F=2, H=3, W=4
+            orig_mean = hidden_states.mean(dim=(0, 2, 3, 4), keepdim=True)
+            orig_std = hidden_states.std(dim=(0, 2, 3, 4), keepdim=True)
+            
+            # get mixed channel wise mariginal distrubution
+            mixed_mean = mixed.mean(dim=(0, 2, 3, 4), keepdim=True)
+            mixed_std = mixed.std(dim=(0, 2, 3, 4), keepdim=True)
+            
+            # resize to the vae-encoded high dimensional spherical shell
+            hidden_states = (mixed - mixed_mean) / (mixed_std + 1e-5) * orig_std + orig_mean
+```
+
+
+
+
+
+### 模型架构
+
+基于wan2.2-5B DiT only, 包含深度图组件/VLA组件/SAPIEN仿真器  VAE在训练时候冻结：
 
 ![giga-world-1](./asserts/giga-world-1.png)
 
-提供了批量推理/checkpoint与output同步脚本
+### 推理
 
-训练环境为4卡A800 单任务训练速度4h/10epochs
+单次有效生成8frame(2 latent frame)
 
-![training](./asserts/training.png)
+单次输入9 帧 (1 ref + 8 未来帧条件)  生成Latent: (1, 16, 3, 28, 84) 为 3 个 temporal latent chunks（1 reference latent+ 2 embedded noise）
 
-# 单任务推理结果
+30步去噪，每一步去噪起始都重置reference latent
 
-## task6白色衣服 
+VAE decode后 得到 1ref+ 8 生成帧数
+
+用 第7生成帧作为ref 帧，保留8帧作为输出视频（1ref+7生成帧）
+
+loop 
+
+注：首帧过VAE跳过了时间压缩直接得到 reference latent
+
+### 训练
+
+环境为4卡A800 单任务训练速度4h/10epochs
+
+<img src="./asserts/training.png" alt="training" style="zoom: 50%;" />
+
+# Inference results of single-task trained model
+
+wan2.2视频帧数在16fps，不同数采频率/VLA 输出并未完全与视频模型对齐，因此全部按照帧数进行计算总长度，且不使用插帧。
+
+## task6 fold white T-shirts
+
+#### 90 epochs
+
+<img src="./asserts/task_6_train_set.gif" style="width:50%;">
+
+inference using trajectories in training set,total frame 849
+
+<img src="./asserts/task_6_test_set.gif" style="width:50%;">
+
+inference using VLA roll out trajectories ,total frame 1041
+
+#### 40 epochs
 
 ![task6](./asserts/task6.gif)
 
+inference using real world rollout trajectories not seen in training sets ,total frame 1185
 
+Note: the results are not fully stable and may exhibit artifacts, reduced sharpness, temporal flickering, or interaction failures. training loss converged after 80epochs 
 
-## task h1黑色T恤 via 深度图control
+## task h1 fold black shirt via depth-control
 
 ![h1-test](./asserts/h1-test.gif)
 
-## task4 开盒倒薯条
+limited datasets，test only，long rollouts  1185 frames
+
+## task4 Open the box and transfer the fries onto the plate
 
 ![task4](./asserts/task4.gif)
 
-## task 3 折叠纸盒
+Challenge: transparent materials,median length ，545 frame
+
+## task 3 fold the box
 
 ![task3](./asserts/task3.gif)
 
-## task2 碗放在盘子上
+complex manipulation ,401frame
+
+## task2 Placing the bowl onto the plate
 
 ![task2](./asserts/task2.gif)
 
+short motion ,209 frame 
 
+visual occlusion causing object disappearance.
 
 ## 关于长视频问题
 
-wan2.2-5B 参数较小且训练数据少有30s+，且基于embedding的控制过于粗糙*[ref](https://mp.weixin.qq.com/s/s6VNn45vUNUsu8_r3NBsQg)
+wan2.2-5B 参数较小且训练数据少有30s+，且基于embedding的控制不同于训练时通过cross attention注入*[ref](https://mp.weixin.qq.com/s/s6VNn45vUNUsu8_r3NBsQg)
 
-# 推理（online and offline）
+rollout设置为33帧，对标于VLA一次产生的动作一般不会超过50steps （从质量上看也失去了持续生成长视频的能力）
 
-![Generation quality evaluation pipeline](./asserts/eval1.png)
+需要调大batch size 得到一定程度的基模后，再持续的往后训练。
 
-![World model as VLA evaluator evaluation pipeline](./asserts/eval2.png)
+# 推理（offlineand online）
 
-评估指标为 world arena/ Pbench-nvidia/Veo-sim
+<img src="./asserts/eval1.png" alt="Generation quality evaluation pipeline" style="zoom: 67%;" />
+
+视频角度：画面质量/空间，物理一致性/指令跟随 etc. | 有多好？👆（offline）
+
+交互角度：对于vla的影响 | WM相比于真实世界对于策略选择的影响/谁更接近于最优的策略选择？👇（online）
+
+<img src="./asserts/eval2.png" alt="World model as VLA evaluator evaluation pipeline" style="zoom: 50%;" />
+
+评估指标共三类: ==world arena / Pbench-nvidia / Veo-sim==
 
 
 
@@ -125,6 +205,8 @@ task/
     └── ...
 ```
 > **Bonus for training episode:** alongside the ground-truth videos, we also supply depth maps and simulator renderings.
+>
+> （也可也自己launch ，通过点云还原深度
 
 ![Demo Data](asserts/demo_data.gif)
 
