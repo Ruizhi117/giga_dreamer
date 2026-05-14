@@ -8,7 +8,7 @@
 
 🌟**TLDR** : Modified the pipeline to support single-RTX 5090 online inference by decoupling VLA execution on CPU , WM and simulator on consuming GPU. Added colored depth-map conditioning and a latent normalization layer(AdaIN) for improved stability and control consistency. The model architecture and inference results are shown below.
 
-
+🌠 🤗[model weights for task6](https://huggingface.co/xx117/giga-world-1-test-task6) 
 
 
 
