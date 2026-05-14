@@ -1,4 +1,4 @@
-<div align="center" style="font-family: charter;">
+<div align="left" style="font-family: charter;">
     <h1> Giga Dreamer | CVPR-2026-Workshop-WM-Track </h1>
 
 
